@@ -58,15 +58,20 @@ public class Employee {
     }
 
     public String getFullName(){
-        if (this.firstName == null && this.lastName == null){
-            return "";
-        } else if (this.firstName == null) {
-            return this.lastName;
-        } else if (this.lastName == null) {
-            return this.firstName;
-        } else {
+
+        if (isValid()){
             return this.firstName + " " + this.lastName;
+        } else if (this.firstName == null && this.lastName == null){
+            return "No full name";
+        } else if (this.firstName == null){
+            return this.lastName;
+        } else if (this.lastName == null){
+            return this.firstName;
         }
+        return "";
     }
 
+    public boolean isValid(){
+        return this.firstName != null && this.lastName != null && !this.firstName.isBlank() && !this.lastName.isBlank();
+    }
 }

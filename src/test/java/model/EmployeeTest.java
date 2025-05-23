@@ -42,9 +42,49 @@ public class EmployeeTest {
         employee.setFirstName(null);
         employee.setLastName(null);
 
-        String expectedFullName = "";
+        String expectedFullName = "No full name";
 
         assertEquals(expectedFullName, employee.getFullName());
     }
 
+
+    @Test
+    public void testIsValidWhenFirstAndLastNameArePresent(){
+        boolean expectedIsValid = true;
+        assertEquals(expectedIsValid, employee.isValid());
+    }
+
+    @Test
+    public void testIsValidWhenFirstNameIsBlank(){
+        employee.setFirstName("");
+        boolean expectedIsValid = false;
+
+        assertEquals(expectedIsValid, employee.isValid());
+    }
+
+    @Test
+    public void testIsValidWhenLastNameIsBlank(){
+        employee.setLastName("");
+        boolean expectedIsValid = false;
+
+        assertEquals(expectedIsValid, employee.isValid());
+    }
+
+    @Test
+    public void testIsValidWhenBothNamesAreNotPresent(){
+        employee.setFirstName(null);
+        employee.setLastName(null);
+        boolean expectedIsValid = false;
+
+        assertEquals(expectedIsValid, employee.isValid());
+    }
+
+    @Test
+    public void testIsValidWhenBothNamesAreBlank(){
+        employee.setFirstName("");
+        employee.setLastName("");
+        boolean expectedIsValid = false;
+
+        assertEquals(expectedIsValid, employee.isValid());
+    }
 }
