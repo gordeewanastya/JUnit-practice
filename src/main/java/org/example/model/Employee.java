@@ -56,4 +56,17 @@ public class Employee {
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
     }
+
+    public String getFullName(){
+        if (this.firstName == null && this.lastName == null){
+            return "";
+        } else if (this.firstName == null) {
+            return this.lastName;
+        } else if (this.lastName == null) {
+            return this.firstName;
+        } else {
+            return this.firstName + " " + this.lastName;
+        }
+    }
+
 }
