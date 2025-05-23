@@ -1,0 +1,51 @@
+Employee time tracking:
+    - Employee (id, firstName, lastName, department, jobTitle)
+    - Presence (date, timeIn, timeOut, employee)
+    - WorkDaySummary (employee, date, presences)
+
+1) class Employee -> contains info about an employee
+
+    Integer id
+    String firstName
+    String lastName
+    String department
+    String jobTitle
+
+    Method String getFullName() -> returns firstName and lastName together as one string
+        So the method should return result of concatenation firstName + " " + lastName
+
+    Method boolean isValid() -> checks whether firstName and lastName are not blank and not null
+        Method returns true, if conditions that these string are not blank and not null
+        Method returns false, otherwise
+
+2) class Presence -> contains info about time when employee started and then ended work, on concrete day
+
+    LocalDate date
+    LocalDateTime timeIn
+    LocalDateTime timeOut
+    Employee employee
+
+    Method Duration getDuration() -> returns duration of employee's presence at work
+        Method returns the duration between timeIn and timeOut in case both are valid
+        Otherwise return Duration.ZERO
+
+    Method boolean isValid() -> checks whether timeIn and timeOut are not null, and timeOut is greater than timeIn
+
+3) class WorkDaySummary -> contains a list of all presences of an employee during the day and can calculate total worked time
+
+    Employee employee
+    LocalDate date
+    List<Presence> presences
+
+    Method Duration getTotalWorkedTime() -> returns total worked time during the concrete day
+        Sums up all the durations from the presences list and returns the sum of working hours
+
+
+    Method boolean hasIncompleteRecords() -> checks whether there are invalid or incomplete presence records
+        Returns true if any presence record is invalid or incomplete
+        Returns false if all presence records are valid
+
+    Method void addPresence(Presence presence) -> used to add presence to the list
+        Checks whether presence is not null and is the same date as this workDaySummary.date, then adds it to the list
+
+
