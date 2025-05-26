@@ -7,7 +7,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class PresenceCalculator implements IPresenceCalculator {
-    private Presence presence;
+    private final Presence presence;
 
     public PresenceCalculator(Presence presence) {
         if (presence == null) throw new IllegalArgumentException("Presence cannot be null");

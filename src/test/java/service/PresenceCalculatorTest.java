@@ -31,6 +31,11 @@ public class PresenceCalculatorTest {
     }
 
     @Test
+    public void testConstructorThrowsExceptionWhenPresenceIsNull(){
+        assertThrows(IllegalArgumentException.class, () -> new PresenceCalculator(null));
+    }
+
+    @Test
     public void testGetWorkingHoursDurationWhenAreValid(){
         Duration expectedDuration = Duration.ofHours(9).plusMinutes(30);
 
@@ -64,6 +69,15 @@ public class PresenceCalculatorTest {
     @Test
     public void testAreWorkingHoursWhenTimeOutIsBeforeTimeIn(){
         presence.setTimeOut(LocalDateTime.of(2025,5,23,6,0));
+        assertFalse(presenceCalculator.areWorkingHoursValid());
+    }
+
+    @Test
+    public void testAreWorkingHoursValidWhenTimeIsTheSame(){
+        LocalDateTime sameTime = LocalDateTime.of(2025,5,20,9,0);
+        presence.setTimeIn(sameTime);
+        presence.setTimeOut(sameTime);
+
         assertFalse(presenceCalculator.areWorkingHoursValid());
     }
 }

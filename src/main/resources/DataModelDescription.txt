@@ -11,19 +11,36 @@ Employee time tracking:
     String department
     String jobTitle
 
-    Method String getFullName() -> returns firstName and lastName together as one string
-        So the method should return result of concatenation firstName + " " + lastName
+2) interface IEmployeeService -> defines methods that handles employee fields
 
-    Method boolean isValid() -> checks whether firstName and lastName are not blank and not null
-        Method returns true, if conditions that these string are not blank and not null
-        Method returns false, otherwise
+    Method String getFullName() -> returns fullName
 
-2) class Presence -> contains info about time when employee started and then ended work, on concrete day
+    Method boolean isValid() -> checks whether firstName and lastName are valid
+
+3) class EmployeeService -> implements the IEmployeeService
+
+     Method String getFullName() -> returns the full name by combining first and last name with a space
+            If both names are invalid or missing returns "No full name"
+            If only one name is present, returns that name
+
+     Method boolean isValid() -> checks whether firstName and lastName are not blank and not null
+            Method returns true, if conditions that these string are not blank and not null
+            Method returns false, otherwise
+
+4) class Presence -> contains info about time when employee started and then ended work, on concrete day
 
     LocalDate date
     LocalDateTime timeIn
     LocalDateTime timeOut
     Employee employee
+
+5) interface IPresenceCalculator -> defines methods to calculate duration of a work day
+
+    Method Duration getWorkingHoursDuration() -> returns duration of employee's presence at work
+
+    Method boolean areWorkingHoursValid() -> checks whether working hours are valid
+
+6) class PresenceCalculator -> implements the IPresenceCalculator
 
     Method Duration getDuration() -> returns duration of employee's presence at work
         Method returns the duration between timeIn and timeOut in case both are valid
@@ -31,7 +48,7 @@ Employee time tracking:
 
     Method boolean isValid() -> checks whether timeIn and timeOut are not null, and timeOut is greater than timeIn
 
-3) class WorkDaySummary -> contains a list of all presences of an employee during the day and can calculate total worked time
+7) class WorkDaySummary -> contains a list of all presences of an employee during the day and can calculate total worked time
 
     Employee employee
     LocalDate date
