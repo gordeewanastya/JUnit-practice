@@ -1,13 +1,14 @@
 package org.example.model;
 
-public class Employee {
+public class Employee{
     private Integer id;
     private String firstName;
     private String lastName;
     private String department;
     private String jobTitle;
 
-    public Employee(){}
+    public Employee(){
+    }
 
     public Employee(Integer id, String firstName, String lastName, String department, String jobTitle) {
         this.id = id;
@@ -55,23 +56,5 @@ public class Employee {
 
     public void setJobTitle(String jobTitle) {
         this.jobTitle = jobTitle;
-    }
-
-    public String getFullName(){
-
-        if (isValid()){
-            return this.firstName + " " + this.lastName;
-        } else if (this.firstName == null && this.lastName == null){
-            return "No full name";
-        } else if (this.firstName == null){
-            return this.lastName;
-        } else if (this.lastName == null){
-            return this.firstName;
-        }
-        return "";
-    }
-
-    public boolean isValid(){
-        return this.firstName != null && this.lastName != null && !this.firstName.isBlank() && !this.lastName.isBlank();
     }
 }

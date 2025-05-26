@@ -1,24 +1,28 @@
-package model;
+package service;
 
+import org.example.interfaces.IEmployeeService;
 import org.example.model.Employee;
+import org.example.service.EmployeeService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class EmployeeTest {
+public class EmployeeServiceTest {
 
+    private IEmployeeService employeeService;
     private Employee employee;
 
     @BeforeEach
     public void setUpEmployee(){
         employee = new Employee(1,"Anastasia", "Gordeeva", "IT", "Developer");
+        employeeService = new EmployeeService(employee);
     }
 
     @Test
     public void testGetFullName(){
         String expectedFullName = employee.getFirstName() + " " + employee.getLastName();
-        assertEquals(expectedFullName, employee.getFullName());
+        assertEquals(expectedFullName, employeeService.getFullName());
     }
 
     @Test
@@ -26,7 +30,7 @@ public class EmployeeTest {
         employee.setFirstName(null);
         String expectedFullName = employee.getLastName();
 
-        assertEquals(expectedFullName, employee.getFullName());
+        assertEquals(expectedFullName, employeeService.getFullName());
     }
 
     @Test
@@ -34,7 +38,7 @@ public class EmployeeTest {
         employee.setLastName(null);
         String expectedFullName = employee.getFirstName();
 
-        assertEquals(expectedFullName, employee.getFullName());
+        assertEquals(expectedFullName, employeeService.getFullName());
     }
 
     @Test
@@ -44,30 +48,30 @@ public class EmployeeTest {
 
         String expectedFullName = "No full name";
 
-        assertEquals(expectedFullName, employee.getFullName());
+        assertEquals(expectedFullName, employeeService.getFullName());
     }
 
 
     @Test
     public void testIsValidWhenFirstAndLastNameArePresent(){
         boolean expectedIsValid = true;
-        assertEquals(expectedIsValid, employee.isValid());
+        assertEquals(expectedIsValid, employeeService.isValid());
     }
 
     @Test
     public void testIsValidWhenFirstNameIsBlank(){
-        employee.setFirstName("");
+        employee.setFirstName(" ");
         boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employee.isValid());
+        assertEquals(expectedIsValid, employeeService.isValid());
     }
 
     @Test
     public void testIsValidWhenLastNameIsBlank(){
-        employee.setLastName("");
+        employee.setLastName(" ");
         boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employee.isValid());
+        assertEquals(expectedIsValid, employeeService.isValid());
     }
 
     @Test
@@ -76,15 +80,15 @@ public class EmployeeTest {
         employee.setLastName(null);
         boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employee.isValid());
+        assertEquals(expectedIsValid, employeeService.isValid());
     }
 
     @Test
     public void testIsValidWhenBothNamesAreBlank(){
-        employee.setFirstName("");
-        employee.setLastName("");
+        employee.setFirstName(" ");
+        employee.setLastName(" ");
         boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employee.isValid());
+        assertEquals(expectedIsValid, employeeService.isValid());
     }
 }
