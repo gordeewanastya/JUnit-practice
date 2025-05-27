@@ -14,70 +14,63 @@ import java.time.LocalDateTime;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PresenceCalculatorTest {
-    private Presence presence;
-    private IPresenceCalculator presenceCalculator;
+  private Presence presence;
+  private IPresenceCalculator presenceCalculator;
 
+  @BeforeEach
+  public void setUp() {
+    LocalDate date = LocalDate.of(2025, 5, 23);
+    LocalDateTime timeIn = LocalDateTime.of(2025, 5, 23, 9, 0);
+    LocalDateTime timeOut = LocalDateTime.of(2025, 5, 23, 18, 30);
 
-    @BeforeEach
-    public void setUp() {
-        LocalDate date = LocalDate.of(2025, 5, 23);
-        LocalDateTime timeIn = LocalDateTime.of(2025, 5, 23, 9, 0);
-        LocalDateTime timeOut = LocalDateTime.of(2025, 5, 23, 18, 30);
+    Employee employee = new Employee(1, "Anastasia", "Gordeeva", "IT", "Developer");
+    presence = new Presence(date, timeIn, timeOut, employee);
+    presenceCalculator = new PresenceCalculator();
+  }
 
+  @Test
+  public void testGetWorkingHoursDurationWhenAreValid() {
+    Duration expectedDuration = Duration.ofHours(9).plusMinutes(30);
 
-        Employee employee = new Employee(1, "Anastasia", "Gordeeva", "IT", "Developer");
-        presence = new Presence(date, timeIn, timeOut, employee);
-        presenceCalculator = new PresenceCalculator(presence);
-    }
+    assertEquals(expectedDuration, presenceCalculator.getWorkingHoursDuration(presence));
+  }
 
-    @Test
-    public void testConstructorThrowsExceptionWhenPresenceIsNull(){
-        assertThrows(IllegalArgumentException.class, () -> new PresenceCalculator(null));
-    }
+  @Test
+  public void testGetWorkingHoursDurationWhenAreInvalid() {
+    presence.setTimeIn(null);
 
-    @Test
-    public void testGetWorkingHoursDurationWhenAreValid(){
-        Duration expectedDuration = Duration.ofHours(9).plusMinutes(30);
+    assertEquals(Duration.ZERO, presenceCalculator.getWorkingHoursDuration(presence));
+  }
 
-        assertEquals(expectedDuration, presenceCalculator.getWorkingHoursDuration());
-    }
+  @Test
+  public void testAreWorkingHoursValid() {
+    assertTrue(presenceCalculator.areWorkingHoursValid(presence));
+  }
 
-    @Test
-    public void testGetWorkingHoursDurationWhenAreInvalid(){
-        presence.setTimeIn(null);
+  @Test
+  public void testAreWorkingHoursWhenTimeInIsNull() {
+    presence.setTimeIn(null);
+    assertFalse(presenceCalculator.areWorkingHoursValid(presence));
+  }
 
-        assertEquals(Duration.ZERO, presenceCalculator.getWorkingHoursDuration());
-    }
+  @Test
+  public void testAreWorkingHoursWhenTimeOutIsNull() {
+    presence.setTimeOut(null);
+    assertFalse(presenceCalculator.areWorkingHoursValid(presence));
+  }
 
-    @Test
-    public void testAreWorkingHoursValid(){
-        assertTrue(presenceCalculator.areWorkingHoursValid());
-    }
+  @Test
+  public void testAreWorkingHoursWhenTimeOutIsBeforeTimeIn() {
+    presence.setTimeOut(LocalDateTime.of(2025, 5, 23, 6, 0));
+    assertFalse(presenceCalculator.areWorkingHoursValid(presence));
+  }
 
-    @Test
-    public void testAreWorkingHoursWhenTimeInIsNull(){
-        presence.setTimeIn(null);
-        assertFalse(presenceCalculator.areWorkingHoursValid());
-    }
+  @Test
+  public void testAreWorkingHoursValidWhenTimeIsTheSame() {
+    LocalDateTime sameTime = LocalDateTime.of(2025, 5, 20, 9, 0);
+    presence.setTimeIn(sameTime);
+    presence.setTimeOut(sameTime);
 
-    @Test
-    public void testAreWorkingHoursWhenTimeOutIsNull(){
-        presence.setTimeOut(null);
-        assertFalse(presenceCalculator.areWorkingHoursValid());
-    }
-
-    @Test
-    public void testAreWorkingHoursWhenTimeOutIsBeforeTimeIn(){
-        presence.setTimeOut(LocalDateTime.of(2025,5,23,6,0));
-        assertFalse(presenceCalculator.areWorkingHoursValid());
-    }
-
-    @Test
-    public void testAreWorkingHoursValidWhenTimeIsTheSame(){
-        LocalDateTime sameTime = LocalDateTime.of(2025,5,20,9,0);
-        presence.setTimeIn(sameTime);
-        presence.setTimeOut(sameTime);
-
-        assertFalse(presenceCalculator.areWorkingHoursValid());
-    }
+    assertFalse(presenceCalculator.areWorkingHoursValid(presence));
+  }
 }

@@ -7,25 +7,25 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 public class PresenceCalculator implements IPresenceCalculator {
-    private final Presence presence;
 
-    public PresenceCalculator(Presence presence) {
-        if (presence == null) throw new IllegalArgumentException("Presence cannot be null");
-        this.presence = presence;
+  @Override
+  public Duration getWorkingHoursDuration(Presence presence) {
+    if (presence == null) {
+      throw new IllegalArgumentException("Presence cannot be null");
     }
 
-    @Override
-    public Duration getWorkingHoursDuration() {
-        if (areWorkingHoursValid()) return Duration.between(presence.getTimeIn(), presence.getTimeOut());
-
-        return Duration.ZERO;
+    if (areWorkingHoursValid(presence)) {
+      return Duration.between(presence.getTimeIn(), presence.getTimeOut());
     }
 
-    @Override
-    public boolean areWorkingHoursValid() {
-        LocalDateTime timeIn = presence.getTimeIn();
-        LocalDateTime timeOut = presence.getTimeOut();
+    return Duration.ZERO;
+  }
 
-        return timeIn != null && timeOut !=null && timeOut.isAfter(timeIn);
-    }
+  @Override
+  public boolean areWorkingHoursValid(Presence presence) {
+    LocalDateTime timeIn = presence.getTimeIn();
+    LocalDateTime timeOut = presence.getTimeOut();
+
+    return timeIn != null && timeOut != null && timeOut.isAfter(timeIn);
+  }
 }

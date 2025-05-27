@@ -1,10 +1,8 @@
 package org.example.interfaces;
 
+import java.time.Duration;
 import org.example.model.Presence;
 import org.example.model.WorkDaySummary;
-
-import java.time.Duration;
-import java.util.List;
 
 public interface IWorkDaySummaryService {
     Duration getTotalWorkedTime();

@@ -1,60 +1,61 @@
 package org.example.service;
 
+import java.time.Duration;
+import org.example.interfaces.IEmployeeService;
 import org.example.interfaces.IPresenceCalculator;
 import org.example.interfaces.IWorkDaySummaryService;
 import org.example.model.Presence;
 import org.example.model.WorkDaySummary;
 
-import java.time.Duration;
-
 public class WorkDaySummaryService implements IWorkDaySummaryService {
-    private WorkDaySummary workDaySummary;
+  private final WorkDaySummary workDaySummary;
+  private final IEmployeeService employeeService;
+  private final IPresenceCalculator calculator;
 
-    public WorkDaySummaryService(){}
+  public WorkDaySummaryService(
+      WorkDaySummary workDaySummary,
+      IEmployeeService employeeService,
+      IPresenceCalculator calculator) {
+    this.calculator = calculator;
+    this.workDaySummary = workDaySummary;
+    this.employeeService = employeeService;
+  }
 
-    public WorkDaySummaryService(WorkDaySummary workDaySummary){
-        this.workDaySummary = workDaySummary;
+  @Override
+  public WorkDaySummary getWorkDaySummary() {
+    return workDaySummary;
+  }
+
+  @Override
+  public Duration getTotalWorkedTime() {
+    if (!employeeService.isValid()) {
+      throw new IllegalStateException("Employee data is not valid!");
     }
 
-    @Override
-    public WorkDaySummary getWorkDaySummary() {
-        return workDaySummary;
+    Duration total = Duration.ZERO;
+    for (Presence presence : workDaySummary.getPresences()) {
+      if (!hasIncompleteRecords(presence)) {
+        total = total.plus(calculator.getWorkingHoursDuration(presence));
+      }
     }
+    return total;
+  }
 
-    @Override
-    public Duration getTotalWorkedTime() {
-        Duration total = Duration.ZERO;
+  @Override
+  public boolean hasIncompleteRecords(Presence presence) {
+    return !calculator.areWorkingHoursValid(presence);
+  }
 
-        for (Presence presence : workDaySummary.getPresences()) {
-            if (!hasIncompleteRecords(presence)){
-                IPresenceCalculator calculator = new PresenceCalculator(presence);
-                total = total.plus(calculator.getWorkingHoursDuration());
-            }
-        }
-        return total;
+  @Override
+  public void addPresence(Presence presence) {
+    if (!employeeService.isValid()) {
+      throw new IllegalStateException("Employee data is not valid!");
     }
-
-    @Override
-    public boolean hasIncompleteRecords(Presence presence) {
-        IPresenceCalculator presenceCalculator = new PresenceCalculator(presence);
-        if (presenceCalculator.areWorkingHoursValid()){
-            return false;
-        }
-
-        return true;
+    if (presence != null
+        && workDaySummary.getDate().equals(presence.getDate())
+        && workDaySummary.getEmployee().equals(presence.getEmployee())
+        && !workDaySummary.getPresences().contains(presence)) {
+      workDaySummary.getPresences().add(presence);
     }
-
-    @Override
-    public void addPresence(Presence presence) {
-        if (
-                presence != null
-                && workDaySummary.getDate().equals(presence.getDate())
-                && workDaySummary.getEmployee().equals(presence.getEmployee())
-                && !workDaySummary.getPresences().contains(presence)
-        ){
-            workDaySummary.getPresences().add(presence);
-        }
-    }
-
-
+  }
 }
