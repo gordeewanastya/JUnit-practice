@@ -54,15 +54,26 @@ Employee time tracking:
     LocalDate date
     List<Presence> presences
 
+8) interface IWorkDaySummaryService -> defines methods to calculate total worked time for an employee for specific day
+
+    Method Duration getTotalWorkedTime() -> returns total worked time during the concrete day
+
+    Method boolean hasIncompleteRecords() -> checks whether there are invalid or incomplete presence records
+
+    Method void addPresence(Presence presence) -> used to add presence to the list
+
+9) class WorkDaySummaryService -> implements IWorkDaySummary
+
     Method Duration getTotalWorkedTime() -> returns total worked time during the concrete day
         Sums up all the durations from the presences list and returns the sum of working hours
-
 
     Method boolean hasIncompleteRecords() -> checks whether there are invalid or incomplete presence records
         Returns true if any presence record is invalid or incomplete
         Returns false if all presence records are valid
 
     Method void addPresence(Presence presence) -> used to add presence to the list
-        Checks whether presence is not null and is the same date as this workDaySummary.date, then adds it to the list
+        Checks whether presence is not null and is the same date as this workDaySummary.date and the same employee,
+         then adds it to the list
+
 
 

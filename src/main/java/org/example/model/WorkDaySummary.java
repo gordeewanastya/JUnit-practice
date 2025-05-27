@@ -11,6 +11,12 @@ public class WorkDaySummary {
 
     public WorkDaySummary(){}
 
+    public WorkDaySummary(Employee employee, LocalDate date){
+        this.employee = employee;
+        this.date = date;
+        this.presences = new ArrayList<>();
+    }
+
     public WorkDaySummary(Employee employee, LocalDate date, List<Presence> presences) {
         this.employee = employee;
         this.date = date;
