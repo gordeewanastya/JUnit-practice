@@ -13,17 +13,17 @@ Employee time tracking:
 
 2) interface IEmployeeService -> defines methods that handles employee fields
 
-    Method String getFullName() -> returns fullName
+    Method String getFullName(Employee employee) -> returns fullName
 
-    Method boolean isValid() -> checks whether firstName and lastName are valid
+    Method boolean isValid(Employee employee) -> checks whether firstName and lastName are valid
 
 3) class EmployeeService -> implements the IEmployeeService
 
-     Method String getFullName() -> returns the full name by combining first and last name with a space
+     Method String getFullName(Employee employee) -> returns the full name by combining first and last name with a space
             If both names are invalid or missing returns "No full name"
             If only one name is present, returns that name
 
-     Method boolean isValid() -> checks whether firstName and lastName are not blank and not null
+     Method boolean isValid(Employee employee) -> checks whether firstName and lastName are not blank and not null
             Method returns true, if conditions that these string are not blank and not null
             Method returns false, otherwise
 
@@ -36,17 +36,17 @@ Employee time tracking:
 
 5) interface IPresenceCalculator -> defines methods to calculate duration of a work day
 
-    Method Duration getWorkingHoursDuration() -> returns duration of employee's presence at work
+    Method Duration getWorkingHoursDuration(Presence presence) -> returns duration of employee's presence at work
 
-    Method boolean areWorkingHoursValid() -> checks whether working hours are valid
+    Method boolean areWorkingHoursValid(Presence presence) -> checks whether working hours are valid
 
 6) class PresenceCalculator -> implements the IPresenceCalculator
 
-    Method Duration getDuration() -> returns duration of employee's presence at work
+    Method Duration getWorkingHoursDuration(Presence presence) -> returns duration of employee's presence at work
         Method returns the duration between timeIn and timeOut in case both are valid
         Otherwise return Duration.ZERO
 
-    Method boolean isValid() -> checks whether timeIn and timeOut are not null, and timeOut is greater than timeIn
+    Method boolean isValid(Presence presence) -> checks whether timeIn and timeOut are not null, and timeOut is greater than timeIn
 
 7) class WorkDaySummary -> contains a list of all presences of an employee during the day and can calculate total worked time
 
@@ -56,22 +56,22 @@ Employee time tracking:
 
 8) interface IWorkDaySummaryService -> defines methods to calculate total worked time for an employee for specific day
 
-    Method Duration getTotalWorkedTime() -> returns total worked time during the concrete day
+    Method Duration getTotalWorkedTime(Employee employee, WorkDaySummary workDaySummary) -> returns total worked time during the concrete day
 
-    Method boolean hasIncompleteRecords() -> checks whether there are invalid or incomplete presence records
+    Method boolean hasIncompleteRecords(Presence presence) -> checks whether there are invalid or incomplete presence records
 
-    Method void addPresence(Presence presence) -> used to add presence to the list
+    Method void addPresence(Presence presence, Employee employee, WorkDaySummary workDaySummary) -> used to add presence to the list
 
 9) class WorkDaySummaryService -> implements IWorkDaySummary
 
-    Method Duration getTotalWorkedTime() -> returns total worked time during the concrete day
+    Method Duration getTotalWorkedTime(Employee employee, WorkDaySummary workDaySummary) -> returns total worked time during the concrete day
         Sums up all the durations from the presences list and returns the sum of working hours
 
-    Method boolean hasIncompleteRecords() -> checks whether there are invalid or incomplete presence records
+    Method boolean hasIncompleteRecords(Presence presence) -> checks whether there are invalid or incomplete presence records
         Returns true if any presence record is invalid or incomplete
         Returns false if all presence records are valid
 
-    Method void addPresence(Presence presence) -> used to add presence to the list
+    Method void addPresence(Presence presence, Employee employee, WorkDaySummary workDaySummary) -> used to add presence to the list
         Checks whether presence is not null and is the same date as this workDaySummary.date and the same employee,
          then adds it to the list
 
