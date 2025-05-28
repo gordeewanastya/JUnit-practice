@@ -1,10 +1,9 @@
 package org.example.service;
 
-import org.example.interfaces.IPresenceCalculator;
-import org.example.model.Presence;
-
 import java.time.Duration;
 import java.time.LocalDateTime;
+import org.example.interfaces.IPresenceCalculator;
+import org.example.model.Presence;
 
 public class PresenceCalculator implements IPresenceCalculator {
 

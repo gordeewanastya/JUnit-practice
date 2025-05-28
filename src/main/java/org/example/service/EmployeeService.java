@@ -7,17 +7,10 @@ import static java.lang.String.join;
 import static java.util.Objects.requireNonNullElse;
 
 public class EmployeeService implements IEmployeeService {
-  private final Employee employee;
-
-  public EmployeeService(Employee employee) {
-    if (employee == null) throw new IllegalArgumentException("Employee cannot be null");
-    this.employee = employee;
-  }
 
   @Override
-  public String getFullName() {
-
-    if (!isValid()) {
+  public String getFullName(Employee employee) {
+    if (!isValid(employee)) {
       return requireNonNullElse(
           employee.getFirstName(), requireNonNullElse(employee.getLastName(), "No full name"));
     }
@@ -26,7 +19,7 @@ public class EmployeeService implements IEmployeeService {
   }
 
   @Override
-  public boolean isValid() {
+  public boolean isValid(Employee employee) {
     final String firstName = employee.getFirstName();
     final String lastName = employee.getLastName();
 

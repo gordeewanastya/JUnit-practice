@@ -4,31 +4,22 @@ import java.time.Duration;
 import org.example.interfaces.IEmployeeService;
 import org.example.interfaces.IPresenceCalculator;
 import org.example.interfaces.IWorkDaySummaryService;
+import org.example.model.Employee;
 import org.example.model.Presence;
 import org.example.model.WorkDaySummary;
 
 public class WorkDaySummaryService implements IWorkDaySummaryService {
-  private final WorkDaySummary workDaySummary;
   private final IEmployeeService employeeService;
   private final IPresenceCalculator calculator;
 
-  public WorkDaySummaryService(
-      WorkDaySummary workDaySummary,
-      IEmployeeService employeeService,
-      IPresenceCalculator calculator) {
+  public WorkDaySummaryService(IEmployeeService employeeService, IPresenceCalculator calculator) {
     this.calculator = calculator;
-    this.workDaySummary = workDaySummary;
     this.employeeService = employeeService;
   }
 
   @Override
-  public WorkDaySummary getWorkDaySummary() {
-    return workDaySummary;
-  }
-
-  @Override
-  public Duration getTotalWorkedTime() {
-    if (!employeeService.isValid()) {
+  public Duration getTotalWorkedTime(Employee employee, WorkDaySummary workDaySummary) {
+    if (!employeeService.isValid(employee)) {
       throw new IllegalStateException("Employee data is not valid!");
     }
 
@@ -47,8 +38,8 @@ public class WorkDaySummaryService implements IWorkDaySummaryService {
   }
 
   @Override
-  public void addPresence(Presence presence) {
-    if (!employeeService.isValid()) {
+  public void addPresence(Presence presence, Employee employee, WorkDaySummary workDaySummary) {
+    if (!employeeService.isValid(employee)) {
       throw new IllegalStateException("Employee data is not valid!");
     }
     if (presence != null

@@ -10,85 +10,85 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class EmployeeServiceTest {
 
-    private IEmployeeService employeeService;
-    private Employee employee;
+  private IEmployeeService employeeService;
+  private Employee employee;
 
-    @BeforeEach
-    public void setUpEmployee(){
-        employee = new Employee(1,"Anastasia", "Gordeeva", "IT", "Developer");
-        employeeService = new EmployeeService(employee);
-    }
+  @BeforeEach
+  public void setUpEmployee() {
+    employee = new Employee(1, "Anastasia", "Gordeeva", "IT", "Developer");
+    employeeService = new EmployeeService();
+  }
 
-    @Test
-    public void testGetFullName(){
-        String expectedFullName = employee.getFirstName() + " " + employee.getLastName();
-        assertEquals(expectedFullName, employeeService.getFullName());
-    }
+  @Test
+  public void testGetFullName() {
+    String expectedFullName = employee.getFirstName() + " " + employee.getLastName();
 
-    @Test
-    public void testGetFullNameWhenFirstNameIsNull(){
-        employee.setFirstName(null);
-        String expectedFullName = employee.getLastName();
+    assertEquals(expectedFullName, employeeService.getFullName(employee));
+  }
 
-        assertEquals(expectedFullName, employeeService.getFullName());
-    }
+  @Test
+  public void testGetFullNameWhenFirstNameIsNull() {
+    employee.setFirstName(null);
+    String expectedFullName = employee.getLastName();
 
-    @Test
-    public void testGetFullNameWhenLastNameIsNull(){
-        employee.setLastName(null);
-        String expectedFullName = employee.getFirstName();
+    assertEquals(expectedFullName, employeeService.getFullName(employee));
+  }
 
-        assertEquals(expectedFullName, employeeService.getFullName());
-    }
+  @Test
+  public void testGetFullNameWhenLastNameIsNull() {
+    employee.setLastName(null);
+    String expectedFullName = employee.getFirstName();
 
-    @Test
-    public void testGetFullNameWhenBothNamesAreNull(){
-        employee.setFirstName(null);
-        employee.setLastName(null);
+    assertEquals(expectedFullName, employeeService.getFullName(employee));
+  }
 
-        String expectedFullName = "No full name";
+  @Test
+  public void testGetFullNameWhenBothNamesAreNull() {
+    employee.setFirstName(null);
+    employee.setLastName(null);
+    String expectedFullName = "No full name";
 
-        assertEquals(expectedFullName, employeeService.getFullName());
-    }
+    assertEquals(expectedFullName, employeeService.getFullName(employee));
+  }
 
+  @Test
+  public void testIsValidWhenFirstAndLastNameArePresent() {
+    boolean expectedIsValid = true;
 
-    @Test
-    public void testIsValidWhenFirstAndLastNameArePresent(){
-        boolean expectedIsValid = true;
-        assertEquals(expectedIsValid, employeeService.isValid());
-    }
+    assertEquals(expectedIsValid, employeeService.isValid(employee));
+  }
 
-    @Test
-    public void testIsValidWhenFirstNameIsBlank(){
-        employee.setFirstName(" ");
-        boolean expectedIsValid = false;
+  @Test
+  public void testIsValidWhenFirstNameIsBlank() {
+    employee.setFirstName(" ");
+    boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employeeService.isValid());
-    }
+    assertEquals(expectedIsValid, employeeService.isValid(employee));
+  }
 
-    @Test
-    public void testIsValidWhenLastNameIsBlank(){
-        employee.setLastName(" ");
-        boolean expectedIsValid = false;
+  @Test
+  public void testIsValidWhenLastNameIsBlank() {
+    employee.setLastName(" ");
+    boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employeeService.isValid());
-    }
+    assertEquals(expectedIsValid, employeeService.isValid(employee));
+  }
 
-    @Test
-    public void testIsValidWhenBothNamesAreNotPresent(){
-        employee.setFirstName(null);
-        employee.setLastName(null);
-        boolean expectedIsValid = false;
+  @Test
+  public void testIsValidWhenBothNamesAreNotPresent() {
+    employee.setFirstName(null);
+    employee.setLastName(null);
+    boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employeeService.isValid());
-    }
+    assertEquals(expectedIsValid, employeeService.isValid(employee));
+  }
 
-    @Test
-    public void testIsValidWhenBothNamesAreBlank(){
-        employee.setFirstName(" ");
-        employee.setLastName(" ");
-        boolean expectedIsValid = false;
+  @Test
+  public void testIsValidWhenBothNamesAreBlank() {
+    employee.setFirstName(" ");
+    employee.setLastName(" ");
+    boolean expectedIsValid = false;
 
-        assertEquals(expectedIsValid, employeeService.isValid());
-    }
+    assertEquals(expectedIsValid, employeeService.isValid(employee));
+  }
 }
