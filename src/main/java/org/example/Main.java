@@ -9,11 +9,13 @@ import org.example.repository.EmployeeRepository;
 import org.example.service.EmployeeProcessor;
 import org.example.service.EmployeeService;
 import org.example.utils.CSVDataReader;
+import org.example.utils.ConsoleDataReader;
 import org.example.utils.EmployeeRecordMapper;
 import org.example.utils.EmployeeValidator;
 
 import java.io.File;
 import java.sql.SQLException;
+import java.util.Scanner;
 
 public class Main {
   public static void main(String[] args) throws SQLException {
@@ -23,8 +25,7 @@ public class Main {
     IRecordMapper<Employee> employeeRecordMapper = new EmployeeRecordMapper();
     IValidator<Employee> employeeValidator = new EmployeeValidator();
     IEmployeeService employeeService =
-        new EmployeeService(
-            new EmployeeRepository(DBConfiguration.getConnection()));
+        new EmployeeService(new EmployeeRepository(DBConfiguration.getConnection()));
 
     EmployeeProcessor processor =
         new EmployeeProcessor(
@@ -32,8 +33,15 @@ public class Main {
             employeeValidator,
             employeeService);
 
+    EmployeeProcessor processor2 =
+        new EmployeeProcessor(
+            new ConsoleDataReader<>(employeeRecordMapper, new Scanner(System.in)),
+            employeeValidator,
+            employeeService);
+
     try {
       processor.processData();
+      processor2.processData();
       System.out.println("Employee data processed successfully");
     } catch (Exception e) {
       throw new RuntimeException(e);
