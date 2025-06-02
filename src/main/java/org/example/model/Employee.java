@@ -57,4 +57,15 @@ public class Employee {
   public void setJobTitle(String jobTitle) {
     this.jobTitle = jobTitle;
   }
+
+  @Override
+  public String toString() {
+    return "Employee{" +
+            "id=" + id +
+            ", firstName='" + firstName + '\'' +
+            ", lastName='" + lastName + '\'' +
+            ", department='" + department + '\'' +
+            ", jobTitle='" + jobTitle + '\'' +
+            '}';
+  }
 }

@@ -1,25 +1,26 @@
 package org.example.service;
 
 import java.time.Duration;
-import org.example.interfaces.IEmployeeService;
 import org.example.interfaces.IPresenceCalculator;
+import org.example.interfaces.IValidator;
 import org.example.interfaces.IWorkDaySummaryService;
 import org.example.model.Employee;
 import org.example.model.Presence;
 import org.example.model.WorkDaySummary;
 
 public class WorkDaySummaryService implements IWorkDaySummaryService {
-  private final IEmployeeService employeeService;
+  private final IValidator<Employee> employeeValidator;
   private final IPresenceCalculator calculator;
 
-  public WorkDaySummaryService(IEmployeeService employeeService, IPresenceCalculator calculator) {
+  public WorkDaySummaryService(
+      IValidator<Employee> employeeValidator, IPresenceCalculator calculator) {
     this.calculator = calculator;
-    this.employeeService = employeeService;
+    this.employeeValidator = employeeValidator;
   }
 
   @Override
   public Duration getTotalWorkedTime(Employee employee, WorkDaySummary workDaySummary) {
-    if (!employeeService.isValid(employee)) {
+    if (!employeeValidator.isValid(employee)) {
       throw new IllegalStateException("Employee data is not valid!");
     }
 
@@ -39,7 +40,7 @@ public class WorkDaySummaryService implements IWorkDaySummaryService {
 
   @Override
   public void addPresence(Presence presence, Employee employee, WorkDaySummary workDaySummary) {
-    if (!employeeService.isValid(employee)) {
+    if (!employeeValidator.isValid(employee)) {
       throw new IllegalStateException("Employee data is not valid!");
     }
     if (presence != null
