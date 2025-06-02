@@ -33,6 +33,7 @@ public class EmployeeService implements IEmployeeService {
     return firstName != null && lastName != null && !firstName.isBlank() && !lastName.isBlank();
   }
 
+  @Override
   public Employee save(Employee employee) throws SQLException {
     return employeeRepository.save(employee);
   }
